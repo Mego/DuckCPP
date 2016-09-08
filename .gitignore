@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+# IDE files and directories
+*.cbp
+*.layout
+*.depend
+bin/
+obj/
