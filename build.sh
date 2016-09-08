@@ -3,12 +3,15 @@
 # Exit on failure
 set -e
 
+# Set CXX environment variable to g++ if not set
+: ${CXX:=g++}
+
 # Prepare directories
 mkdir -p bin
 cd bin
 
 # Compile
-g++ -c -o duck.o ../src/duck.cpp -I../include/ -std=c++11
+$CXX -c -o duck.o ../src/duck.cpp -I../include/ -std=c++11
 
 # Link
-g++ -o duck duck.o
+$CXX -o duck duck.o
