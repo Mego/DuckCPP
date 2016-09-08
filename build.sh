@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on failure
+set -e
+
 # Prepare directories
 mkdir -p bin
 cd bin
