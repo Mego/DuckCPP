@@ -6,6 +6,7 @@
 
 class Any {
   public:
+    Any(): is_default(true) {}
     template<typename T>
     Any(T value);
     template<typename T>
@@ -24,7 +25,22 @@ class Any {
         return *this;
     }
     template<typename T>
-    T get_value();
+    Any& operator=(T value) {
+        Any other = value;
+        return this->operator=(other);
+    }
+    template<typename T>
+    T get_value() const;
+
+    const bool is_default = false;
+    template<typename T>
+    bool operator==(T value) {
+        try {
+            return this->get_value<T>() == value;
+        } catch(std::bad_cast e) {
+            return false;
+        }
+    }
 
   protected:
 
@@ -46,16 +62,15 @@ Any::Any(T* value) {
 }
 
 template<>
-Any::Any<const char>(const char* value): Any(new std::string(value)) {
+inline Any::Any<const char>(const char* value): Any(new std::string(value)) {
 
 }
 
 template<typename T>
-T Any::get_value() {
+T Any::get_value() const {
     if(typeid(T) == *(this->_val_type)) {
         return *reinterpret_cast<T*>(this->_val_ptr.get());
-    }
-    else {
+    } else {
         throw std::bad_cast();
     }
 }
